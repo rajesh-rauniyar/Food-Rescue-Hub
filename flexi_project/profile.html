@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Food Rescue Hub</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --primary-light: #C8E6C9;
+            --secondary: #FF9800;
+            --secondary-light: #FFE0B2;
+            --light: #f9f9f9;
+            --dark: #333;
+            --gray: #777;
+            --light-gray: #eee;
+            --error: #f44336;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --shadow: 0 5px 15px rgba(0,0,0,0.1);
+            --shadow-hover: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #F57C00;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background-color: #F57C00;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        nav ul li a {
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-hover);
+            min-width: 200px;
+            z-index: 100;
+            margin-top: 10px;
+        }
+
+        .profile-menu:hover .profile-dropdown {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.3s;
+        }
+
+        .profile-dropdown a:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .profile-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding: 40px 0;
+            flex: 1;
+        }
+
+        .profile-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--primary-light);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .avatar-edit:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px 0;
+            border-top: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .quick-actions h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .action-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .action-item:hover {
+            background: var(--light);
+        }
+
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        /* Profile Content */
+        .profile-content {
+            flex: 2;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        /* History Sections */
+        .history-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            margin-bottom: 20px;
+        }
+
+        .history-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .history-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .history-content {
+            display: none;
+        }
+
+        .history-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .empty-text {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* Settings Section */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .setting-item:hover {
+            background: var(--light);
+        }
+
+        .setting-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .setting-title {
+            font-weight: 500;
+        }
+
+        .setting-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+
+            nav {
+                width: 100%;
+                order: 3;
+                margin-top: 15px;
+                display: none;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .auth-buttons {
+                margin-left: auto;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-sidebar {
+                max-width: 100%;
+            }
+
+            .profile-stats {
+                justify-content: space-between;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .history-tabs {
+                flex-wrap: wrap;
+            }
+
+            .history-tab {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNENBRjUwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTMgM2gxOGExIDEgMCAwIDEgMSAxdjE2YTEgMSAwIDAgMS0xIDFIM2ExIDEgMCAwIDEtMS0xVjRhMSAxIDAgMCAxIDEtMXoiPjwvcGF0aD48cGF0aCBkPSJNMyA3aDE4TTMgMTFoMTgiPjwvcGF0aD48cGF0aCBkPSJNMyAxNWgxOCI+PC9wYXRoPjxwYXRoIGQ9Ik0zIDE5aDE4Ij48L3BhdGg+PC9zdmc+" alt="Food Rescue Hub Logo"></a>
+                <h1>Food Rescue Hub</h1>
+            </div>
+            
+            <button class="mobile-menu-btn">☰</button>
+            
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="donate.html">Donate Food</a></li>
+                    <li><a href="receive.html">Receive Food</a></li>
+                    <li class="profile-menu">
+                        <a href="profile.html">
+                
+                            My Profile
+                        </a>
+                        <div class="profile-dropdown">
+                            <a href="profile.html">View Profile</a>
+                            <a href="#" id="edit-profile-btn">Edit Profile</a>
+                            <a href="#" id="change-password-btn">Change Password</a>
+                            <a href="#" id="logout-btn">Log Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="signup.html" class="btn">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Profile Sidebar -->
+                <div class="profile-sidebar">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img src="../photo/profile.jpg" alt="Profile Picture">
+                            <div class="avatar-edit" id="avatar-edit-btn">✏️</div>
+                        </div>
+                        <div class="profile-name">Alex Johnson</div>
+                        <div class="profile-role">Donor & Receiver</div>
+                        
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Donations</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">Received</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">24</div>
+                                <div class="stat-label">Interests</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button class="btn" id="edit-profile-main">Edit Profile</button>
+                            <button class="btn btn-outline" id="change-password-main">Change Password</button>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-list">
+                            <div class="action-item" id="donate-food-action">
+                                <div class="action-icon">🍽️</div>
+                                <span>Donate Food</span>
+                            </div>
+                            <div class="action-item" id="receive-food-action">
+                                <div class="action-icon">🤝</div>
+                                <span>Find Food</span>
+                            </div>
+                            <div class="action-item" id="view-history-action">
+                                <div class="action-icon">📊</div>
+                                <span>View History</span>
+                            </div>
+                            <div class="action-item" id="help-support-action">
+                                <div class="action-icon">❓</div>
+                                <span>Help & Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Content -->
+                <div class="profile-content">
+                    <!-- Personal Information Section -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Personal Information</h2>
+                            <button class="edit-btn" id="edit-personal-info">
+                                <span>✏️</span>
+                                Edit
+                            </button>
+                        </div>
+                        
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Full Name</div>
+                                <div class="info-value">Alex Johnson</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Email Address</div>
+                                <div class="info-value">alex.johnson@example.com</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Mobile Number</div>
+                                <div class="info-value">(555) 123-4567</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Location</div>
+                                <div class="info-value">New York, Manhattan</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Account Role</div>
+                                <div class="info-value">Donor & Receiver</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Member Since</div>
+                                <div class="info-value">March 15, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- History Section -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">My Activity History</h2>
+                        </div>
+                        
+                        <div class="history-tabs">
+                            <div class="history-tab active" data-tab="donated">Donated Food</div>
+                            <div class="history-tab" data-tab="received">Received Food</div>
+                            <div class="history-tab" data-tab="interests">Interest History</div>
+                        </div>
+                        
+                        <!-- Donated Food History -->
+                        <div class="history-content active" id="donated-history">
+                            <div class="empty-state">
+                                <div class="empty-icon">🍽️</div>
+                                <h3 class="empty-title">No Donations Yet</h3>
+                                <p class="empty-text">You haven't donated any food yet. Start making a difference today!</p>
+                                <button class="btn" id="donate-now-btn">Donate Food Now</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Received Food History -->
+                        <div class="history-content" id="received-history">
+                            <div class="empty-state">
+                                <div class="empty-icon">🤝</div>
+                                <h3 class="empty-title">No Food Received Yet</h3>
+                                <p class="empty-text">You haven't received any food donations yet. Browse available food in your area!</p>
+                                <button class="btn" id="find-food-btn">Find Food Nearby</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Interest History -->
+                        <div class="history-content" id="interests-history">
+                            <div class="empty-state">
+                                <div class="empty-icon">👥</div>
+                                <h3 class="empty-title">No Interest Shown Yet</h3>
+                                <p class="empty-text">You haven't shown interest in any food donations yet.</p>
+                                <button class="btn" id="browse-food-btn">Browse Available Food</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Section -->
+                    <div class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Account Settings</h2>
+                        </div>
+                        
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-title">Email Notifications</div>
+                                    <div class="setting-desc">Receive updates about new food donations and requests</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-title">SMS Notifications</div>
+                                    <div class="setting-desc">Get text alerts for urgent food donations</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-title">Two-Factor Authentication</div>
+                                    <div class="setting-desc">Add an extra layer of security to your account</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <div class="setting-title">Location Services</div>
+                                    <div class="setting-desc">Allow us to show food donations near you</div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="edit-profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="modal-close" id="close-edit-profile">&times;</button>
+            </div>
+            
+            <form id="edit-profile-form">
+                <div class="form-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" class="form-control" value="Alex Johnson">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-email">Email Address</label>
+                    <input type="email" id="edit-email" class="form-control" value="alex.johnson@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-phone">Mobile Number</label>
+                    <input type="tel" id="edit-phone" class="form-control" value="(555) 123-4567">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-location">Location</label>
+                    <input type="text" id="edit-location" class="form-control" value="New York, Manhattan">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-role">Account Role</label>
+                    <select id="edit-role" class="form-control">
+                        <option value="donor">Donor Only</option>
+                        <option value="receiver">Receiver Only</option>
+                        <option value="both" selected>Donor & Receiver</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-edit-profile">Cancel</button>
+                    <button type="submit" class="btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="change-password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="modal-close" id="close-change-password">&times;</button>
+            </div>
+            
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" id="current-password" class="form-control" placeholder="Enter your current password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-password">New Password</label>
+                    <input type="password" id="new-password" class="form-control" placeholder="Enter your new password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm New Password</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="Confirm your new password">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancel-change-password">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+
+        // Tab Switching for History
+        const historyTabs = document.querySelectorAll('.history-tab');
+        const historyContents = document.querySelectorAll('.history-content');
+
+        historyTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and contents
+                historyTabs.forEach(t => t.classList.remove('active'));
+                historyContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabName = this.getAttribute('data-tab');
+                document.getElementById(`${tabName}-history`).classList.add('active');
+            });
+        });
+
+        // Modal Controls
+        const editProfileModal = document.getElementById('edit-profile-modal');
+        const changePasswordModal = document.getElementById('change-password-modal');
+
+        // Open Edit Profile Modal
+        document.getElementById('edit-profile-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            editProfileModal.classList.add('active');
+        });
+
+        document.getElementById('edit-profile-main').addEventListener('click', function() {
+            editProfileModal.classList.add('active');
+        });
+
+        document.getElementById('edit-personal-info').addEventListener('click', function() {
+            editProfileModal.classList.add('active');
+        });
+
+        // Close Edit Profile Modal
+        document.getElementById('close-edit-profile').addEventListener('click', function() {
+            editProfileModal.classList.remove('active');
+        });
+
+        document.getElementById('cancel-edit-profile').addEventListener('click', function() {
+            editProfileModal.classList.remove('active');
+        });
+
+        // Open Change Password Modal
+        document.getElementById('change-password-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            changePasswordModal.classList.add('active');
+        });
+
+        document.getElementById('change-password-main').addEventListener('click', function() {
+            changePasswordModal.classList.add('active');
+        });
+
+        // Close Change Password Modal
+        document.getElementById('close-change-password').addEventListener('click', function() {
+            changePasswordModal.classList.remove('active');
+        });
+
+        document.getElementById('cancel-change-password').addEventListener('click', function() {
+            changePasswordModal.classList.remove('active');
+        });
+
+        // Form Submissions
+        document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Profile updated successfully!');
+            editProfileModal.classList.remove('active');
+            // In a real app, this would update the user's profile
+        });
+
+        document.getElementById('change-password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            alert('Password changed successfully!');
+            changePasswordModal.classList.remove('active');
+            // In a real app, this would update the user's password
+        });
+
+        // Quick Actions
+        document.getElementById('donate-food-action').addEventListener('click', function() {
+            window.location.href = 'donate.html';
+        });
+
+        document.getElementById('receive-food-action').addEventListener('click', function() {
+            window.location.href = 'receive.html';
+        });
+
+        document.getElementById('view-history-action').addEventListener('click', function() {
+            document.querySelector('.history-tab[data-tab="donated"]').click();
+            document.querySelector('.content-section:nth-child(2)').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('help-support-action').addEventListener('click', function() {
+            window.location.href = 'contact.html';
+        });
+
+        // Empty State Actions
+        document.getElementById('donate-now-btn').addEventListener('click', function() {
+            window.location.href = 'donate.html';
+        });
+
+        document.getElementById('find-food-btn').addEventListener('click', function() {
+            window.location.href = 'receive.html';
+        });
+
+        document.getElementById('browse-food-btn').addEventListener('click', function() {
+            window.location.href = 'receive.html';
+        });
+
+        // Logout Functionality
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to log out?')) {
+                alert('You have been logged out successfully.');
+                // In a real app, this would clear session and redirect to login
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Profile Picture Change
+        document.getElementById('avatar-edit-btn').addEventListener('click', function() {
+            alert('Profile picture change functionality would open here');
+            // In a real app, this would open a file picker and upload interface
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === editProfileModal) {
+                editProfileModal.classList.remove('active');
+            }
+            if (e.target === changePasswordModal) {
+                changePasswordModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
